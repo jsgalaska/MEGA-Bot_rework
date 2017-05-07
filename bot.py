@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 #import cfg, socket, re, time, sys, msg_parser
 #import psycopg2
-import cfg
+import cfg, socket
 from irc_control import Controller
 
 HOST = cfg.HOST
@@ -35,8 +35,8 @@ def countdown(sec):
 #------------------------------------------------
 
 data = ""
-
-irc = Controller(HOST, PORT)
+s = socket.socket()
+irc = Controller(HOST, PORT, s)
 
 irc.send_pass(cfg.PASS)
 irc.send_nick(cfg.NICK)
@@ -47,7 +47,7 @@ irc.join_channel(cfg.CHAN)
 
 print('Initializing')
 
-while True:
+'''while True:
     
     try:
         data = data+s.recv(1024).decode('UTF-8')
@@ -92,3 +92,4 @@ while True:
     except socket.timeout:
         print("Socket timeout")
 
+'''

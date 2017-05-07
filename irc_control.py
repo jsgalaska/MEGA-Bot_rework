@@ -3,10 +3,10 @@ import cfg, socket
 
 class Controller:
     
-    def __init__(self, HOST, PORT):
+    def __init__(self, HOST, PORT, socket):
         self.HOST=HOST
         self.PORT=PORT
-        self.s = socket.socket()
+        self.s = socket
         self.s.connect((HOST, PORT))
 
     def send_pong(self, msg):
