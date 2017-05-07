@@ -1,6 +1,8 @@
 #!/usr/bin/python3
-import cfg, socket, re, time, sys, msg_parser, irc_control
+#import cfg, socket, re, time, sys, msg_parser
 #import psycopg2
+import cfg
+from irc_control import Controller
 
 HOST = cfg.HOST
 PORT = cfg.PORT
@@ -26,7 +28,7 @@ def countdown(sec):
         sec -= 1
         time.sleep(1)
     if sec == -1:
-        irc_control.part_channel(CHAN)
+        irc.part_channel(CHAN)
         print('Safe to end this Process.')
         sys.exit()
 
@@ -34,15 +36,14 @@ def countdown(sec):
 
 data = ""
 
-s = socket.socket()
-s.connect((HOST, PORT))
+irc = Controller(HOST, PORT)
 
-irc_control.send_pass(cfg.PASS)
-irc_control.send_nick(cfg.NICK)
-irc_control.capreq_membership()
-irc_control.capreq_commands()
+irc.send_pass(cfg.PASS)
+irc.send_nick(cfg.NICK)
+irc.capreq_membership()
+irc.capreq_commands()
 #capreq_tags() -Works, but breaks adminList commands; possibly other things
-irc_control.join_channel(cfg.CHAN)
+irc.join_channel(cfg.CHAN)
 
 print('Initializing')
 
@@ -60,7 +61,7 @@ while True:
 
             if len(line) >= 1:
                 if line[0] == 'PING':
-                    irc_control.send_pong(line[1])
+                    irc.send_pong(line[1])
 
                 if line[1] == 'PRIVMSG':
                     sender = msg_parser.get_sender(line[0])
