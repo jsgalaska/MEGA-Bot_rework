@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 #import cfg, socket, re, time, sys, msg_parser
 #import psycopg2
-import cfg, socket
+import cfg, socket, re, time, sys
 from irc_control import Controller
 
 HOST = cfg.HOST
@@ -47,7 +47,7 @@ irc.join_channel(cfg.CHAN)
 
 print('Initializing')
 
-'''while True:
+while True:
     
     try:
         data = data+s.recv(1024).decode('UTF-8')
@@ -63,7 +63,7 @@ print('Initializing')
                 if line[0] == 'PING':
                     irc.send_pong(line[1])
 
-                if line[1] == 'PRIVMSG':
+                '''if line[1] == 'PRIVMSG':
                     sender = msg_parser.get_sender(line[0])
                     message = msg_parser.get_message(line)
                     msg_parser.parse_message(sender, message)
@@ -78,7 +78,7 @@ print('Initializing')
                 if line[1] == 'PART':
                     sender = msg_parser.get_sender(line[0])
                     print('▌VIEWER UPDATE: '+sender +' has left the chat! :(')
-
+                '''
             while ENGAGE == False:
                 print('I have arrived in ' + CHAN + "'s channel!")
                 #arrive_message()
@@ -91,5 +91,3 @@ print('Initializing')
 
     except socket.timeout:
         print("Socket timeout")
-
-'''
