@@ -1,5 +1,5 @@
 #------------------------------------------------▼ IRC control dictionary
-import cfg, socket
+import cfg
 
 class Controller:
     

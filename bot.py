@@ -1,8 +1,7 @@
 #!/usr/bin/python3
-#import cfg, socket, re, time, sys, msg_parser
-#import psycopg2
 import cfg, socket, re, time, sys
 from irc_control import Controller
+from msg_parser import GET_THIS, PARSE_THIS
 
 HOST = cfg.HOST
 PORT = cfg.PORT
@@ -37,13 +36,18 @@ def countdown(sec):
 data = ""
 s = socket.socket()
 irc = Controller(HOST, PORT, s)
-
 irc.send_pass(cfg.PASS)
 irc.send_nick(cfg.NICK)
 irc.capreq_membership()
 irc.capreq_commands()
 #capreq_tags() -Works, but breaks adminList commands; possibly other things
 irc.join_channel(cfg.CHAN)
+
+#testing------------------------------
+msg, sender = GET_THIS, PARSE_THIS
+getData = GET_THIS(msg, sender)
+parseData = PARSE_THIS(msg, sender)
+#-------------------------------------
 
 print('Initializing')
 
@@ -63,25 +67,27 @@ while True:
                 if line[0] == 'PING':
                     irc.send_pong(line[1])
 
-                '''if line[1] == 'PRIVMSG':
-                    sender = msg_parser.get_sender(line[0])
-                    message = msg_parser.get_message(line)
-                    msg_parser.parse_message(sender, message)
+                #testing------------------------------
+                if line[1] == 'PRIVMSG':
+                    sender = getData.get_sender(line[0])
+                    message = getData.get_message(line)
+                    parseData.parse_message(sender, message)
                     print('CHAT> '+sender +": " + message)
 
                 if line[1] == 'JOIN':
-                    sender = msg_parser.get_sender(line[0])
+                    sender = getData.get_sender(line[0])
                     #save_to_db(sender) ---------save & uncomment
                     print('▌VIEWER UPDATE: ' +'|' +sender +'|' +' has joined the chat!')
                     #send_message(CHAN, 'Welcome '+sender+'! Ya Scrub') -Turned off. May scare/trigger people
 
                 if line[1] == 'PART':
-                    sender = msg_parser.get_sender(line[0])
+                    sender = getData.get_sender(line[0])
                     print('▌VIEWER UPDATE: '+sender +' has left the chat! :(')
-                '''
+                #-------------------------------------
+                
             while ENGAGE == False:
                 print('I have arrived in ' + CHAN + "'s channel!")
-                #arrive_message()
+                #arrive_message() ---Turned off
                 time.sleep(1)
                 ENGAGE = True
         time.sleep(MAXSENDINTERVAL)
